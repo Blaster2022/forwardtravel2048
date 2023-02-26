@@ -1,0 +1,18 @@
+# This is a pipeline to scrape a set of
+# urls stored in the directory `urls` in pfs.
+
+# Use the image at https://registry.hub.docker.com/u/pachyderm/scraper/
+image pachyderm/scraper
+
+# Declare the `urls` directory in pfs as an input.
+input urls
+
+# Implement the scraper.
+run ls /in/urls \
+  | wget --recursive --level 1 \
+         --page-requisites \
+         --adjust-extension \
+         --convert-links \
+         --timestamping \
+         --directory-prefix /out --input-file - \
+  ; true
